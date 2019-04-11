@@ -1,0 +1,324 @@
+unit TI4;
+
+interface
+
+uses
+  Winapi.Windows, Winapi.Messages, System.SysUtils, System.Variants,
+  System.Classes, Vcl.Graphics,
+  Vcl.Controls, Vcl.Forms, Vcl.Dialogs, AllProc, Vcl.StdCtrls, Vcl.ExtCtrls,
+  Vcl.Buttons, System.Actions, Vcl.ActnList, Desicion;
+
+type
+  BoolArr = array [0 .. 2] of Boolean;
+
+  TForm3 = class(TForm)
+    edtP: TEdit;
+    edtQ: TEdit;
+    edtD: TEdit;
+    lblP: TLabel;
+    lblQ: TLabel;
+    lblD: TLabel;
+    btnSubscribe: TBitBtn;
+    pnlD: TPanel;
+    pnlQ: TPanel;
+    pnlP: TPanel;
+    edtSignature: TEdit;
+    lblSign: TLabel;
+    edtHash: TEdit;
+    Label1: TLabel;
+    edtE: TEdit;
+    Label2: TLabel;
+    btnCheckSub: TBitBtn;
+    ActionList1: TActionList;
+    actChangeInfo: TAction;
+    OpenDialog: TOpenDialog;
+    procedure actChangeInfoExecute(Sender: TObject);
+    procedure FormCreate(Sender: TObject);
+    procedure edtPChange(Sender: TObject);
+    procedure edtQChange(Sender: TObject);
+    procedure edtDChange(Sender: TObject);
+    procedure btnSubscribeClick(Sender: TObject);
+    procedure btnCheckSubClick(Sender: TObject);
+  private
+    function CalcE(const EllerFunc: Integer): Integer;
+    function CheckInfo(const flag_arr: BoolArr): Boolean;
+  public
+    Sign: Integer;
+    p, q, d, e, r, EllerFunc: Integer;
+    flags: BoolArr;
+    procedure InitializeVars;
+    procedure RefreshInfo;
+    function SepSignature(var str: String): Integer;
+  end;
+
+const
+  FlagCount = 3;
+
+var
+  Form3: TForm3;
+
+implementation
+
+{$R *.dfm}
+
+function TForm3.SepSignature(var str: String): Integer;
+var
+  i, len, delpos: Integer;
+begin
+  Result := 0;
+  i := 1;
+  len := length(str);
+  while ((str[i] <> '|') and (i <= len)) do
+    inc(i);
+  delpos := i;
+  inc(i);
+  while (str[i] = ' ') and (i <= len) do
+    inc(i);
+  while (str[i] in ['0' .. '9']) and (i <= len) do
+  begin
+    Result := Result * 10 + (ord(str[i]) - 48);
+    inc(i);
+  end;
+  Delete(str, delpos, len - delpos + 1);
+end;
+
+function TForm3.CheckInfo(const flag_arr: BoolArr): Boolean;
+var
+  i: Integer;
+begin
+  if (flag_arr[0] and flag_arr[1] and flag_arr[2]) then
+    Result := True
+  else
+    Result := False;
+end;
+
+procedure TForm3.actChangeInfoExecute(Sender: TObject);
+var
+  temp: Integer;
+  res: Boolean;
+begin
+end;
+
+procedure TForm3.InitializeVars;
+begin
+  flags[0] := False;
+  flags[1] := False;
+  flags[2] := False;
+  p := 0;
+  q := 0;
+  d := 0;
+  e := 0;
+  r := 0;
+end;
+
+procedure TForm3.btnCheckSubClick(Sender: TObject);
+var
+  MainFile: TextFile;
+  temp: String;
+  m, _hash: Integer;
+  str: String;
+begin
+  OpenDialog.Execute;
+  if OpenDialog.FileName <> '' then
+  begin
+    AssignFile(MainFile, OpenDialog.FileName);
+{$I-}
+    Reset(MainFile);
+    str := '';
+    while not(EoF(MainFile)) do
+    begin
+      Readln(MainFile, temp);
+      str := str + temp;
+    end;
+    str := trim(str);
+    Sign := SepSignature(str);
+    edtSignature.Text := IntToStr(Sign);
+    m := Fast_Exp(Sign, e, r);
+    _hash := Hash(str, p * q);
+    edtHash.Text := IntToStr(_hash);
+    Form3.Enabled := False;
+    if _hash = m then
+    begin
+      Desicion.frmDecision.AcceptDraw;
+      Desicion.frmDecision.Show;
+    end
+    else
+    begin
+      ShowMessage('Reject');
+    end;
+
+    CloseFile(MainFile);
+{$I+}
+  end;
+end;
+
+procedure TForm3.btnSubscribeClick(Sender: TObject);
+var
+  MainFile: TextFile;
+  str, temp: String;
+  i, m: Integer;
+begin
+  if OpenDialog.Execute then
+  begin
+    if OpenDialog.FileName <> '' then
+    begin
+      AssignFile(MainFile, OpenDialog.FileName);
+{$I-}
+      Reset(MainFile);
+      str := '';
+      while not(EoF(MainFile)) do
+      begin
+        Readln(MainFile, temp);
+        str := str + temp;
+      end;
+      str := trim(str);
+      m := Hash(str, p * q);
+      edtHash.Text := IntToStr(m);
+      Sign := Fast_Exp(m, d, r);
+      edtSignature.Text := IntToStr(Sign);
+      CloseFile(MainFile);
+      Append(MainFile);
+      Write(MainFile, '| ' + IntToStr(Sign));
+      CloseFile(MainFile);
+{$I+}
+    end;
+  end;
+end;
+
+function TForm3.CalcE(const EllerFunc: Integer): Integer;
+var
+  tmparr: IntArr;
+begin
+  tmparr := Euclide_Extended(EllerFunc, d);
+  Result := tmparr[1];
+end;
+
+procedure TForm3.RefreshInfo;
+begin
+  if flags[0] then
+  begin
+    pnlP.Color := clGreen;
+  end
+  else
+  begin
+    pnlP.Color := clRed;
+    p := 0;
+  end;
+  if flags[1] then
+  begin
+    pnlQ.Color := clGreen;
+  end
+  else
+  begin
+    pnlQ.Color := clRed;
+    q := 0;
+  end;
+  if flags[2] then
+  begin
+    pnlD.Color := clGreen;
+  end
+  else
+  begin
+    pnlD.Color := clRed;
+    d := 0;
+  end;
+  r := p * q;
+  EllerFunc := (q - 1) * (p - 1);
+  e := CalcE(EllerFunc);
+  if CheckInfo(flags) then
+  begin
+    edtE.Text := IntToStr(e);
+    btnSubscribe.Enabled := True;
+    btnCheckSub.Enabled := True;
+  end
+  else
+  begin
+    edtE.Text := '';
+    btnSubscribe.Enabled := False;
+    btnCheckSub.Enabled := False;
+  end;
+end;
+
+procedure TForm3.edtDChange(Sender: TObject);
+var
+  temp: Integer;
+  str: String;
+begin
+  edtD.Text := trim(edtD.Text);
+  str := edtD.Text;
+  if ((edtD.Text <> '') and (not(Check_Letters(str)))) then
+  begin
+    temp := StrToInt(str);
+    d := temp;
+    e := CalcE(EllerFunc);
+    if (e * temp) mod EllerFunc = 1 then
+    begin
+      d := temp;
+      flags[2] := True;
+    end
+    else
+    begin
+      flags[2] := False;
+    end;
+  end
+  else
+    flags[2] := False;
+  RefreshInfo;
+end;
+
+procedure TForm3.edtPChange(Sender: TObject);
+var
+  temp: Integer;
+  str: String;
+begin
+  edtP.Text := trim(edtP.Text);
+  str := edtP.Text;
+  if ((edtP.Text <> '') and (not(Check_Letters(str)))) then
+  begin
+    temp := StrToInt(str);
+    if IsPrime(temp) then
+    begin
+      p := temp;
+      flags[0] := True;
+    end
+    else
+    begin
+      flags[0] := False;
+    end;
+  end
+  else
+    flags[0] := False;
+  RefreshInfo;
+end;
+
+procedure TForm3.edtQChange(Sender: TObject);
+var
+  temp: Integer;
+  str: String;
+begin
+  edtQ.Text := trim(edtQ.Text);
+  str := edtQ.Text;
+  if ((edtQ.Text <> '') and (not(Check_Letters(str)))) then
+  begin
+    temp := StrToInt(str);
+    if IsPrime(temp) then
+    begin
+      q := temp;
+      flags[1] := True;
+    end
+    else
+    begin
+      flags[1] := False;
+    end;
+  end
+  else
+    flags[1] := False;
+  RefreshInfo;
+end;
+
+procedure TForm3.FormCreate(Sender: TObject);
+begin
+  InitializeVars;
+end;
+
+end.

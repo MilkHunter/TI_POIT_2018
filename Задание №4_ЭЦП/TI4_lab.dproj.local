@@ -1,0 +1,12 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<BorlandProject>
+	<Transactions>
+    <Transaction>1899.12.30 00:00:00.000.236,=D:\Users10\Mi Pro\Documents\Embarcadero\Studio\Projects\Unit3.pas</Transaction>
+    <Transaction>1899.12.30 00:00:00.000.926,D:\Users10\Mi Pro\Documents\Embarcadero\Studio\Projects\Project2.dproj=D:\TI_2018\Задание №4_ЭЦП\TI4_lab.dproj</Transaction>
+    <Transaction>1899.12.30 00:00:00.000.506,D:\Users10\Mi Pro\Documents\Embarcadero\Studio\Projects\Unit3.dfm=D:\TI_2018\Задание №4_ЭЦП\TI4.dfm</Transaction>
+    <Transaction>1899.12.30 00:00:00.000.506,D:\Users10\Mi Pro\Documents\Embarcadero\Studio\Projects\Unit3.pas=D:\TI_2018\Задание №4_ЭЦП\TI4.pas</Transaction>
+    <Transaction>1899.12.30 00:00:00.000.478,D:\TI_2018\Задание №4_ЭЦП\Unit1.dfm=D:\TI_2018\Задание №4_ЭЦП\Desicion.dfm</Transaction>
+    <Transaction>1899.12.30 00:00:00.000.149,=D:\TI_2018\Задание №4_ЭЦП\Unit1.pas</Transaction>
+    <Transaction>1899.12.30 00:00:00.000.478,D:\TI_2018\Задание №4_ЭЦП\Unit1.pas=D:\TI_2018\Задание №4_ЭЦП\Desicion.pas</Transaction>
+  </Transactions>
+</BorlandProject>
