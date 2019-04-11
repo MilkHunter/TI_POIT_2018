@@ -1,0 +1,205 @@
+//---------------------------------------------------------------------------
+
+#pragma hdrstop
+
+#include "MainProc.h"
+#include <iostream.h>
+//---------------------------------------------------------------------------
+#pragma package(smart_init)
+
+
+class IntArray
+{
+	private:
+		inline int length(int *arr)
+		{
+			return sizeof(arr)/sizeof(int);
+		}
+		void push_back(int *&arr, int num)
+		{
+			int len = length(arr);
+			int *newArr = new int[len+1];
+			for (int i = 0; i < len; i++)
+			{
+				*(newArr + i) = *(arr + i);
+			}
+			*(newArr + len + 1) = num;
+			delete [] arr;
+			arr = newArr;
+		}
+
+
+};
+
+int length(int *arr)
+{
+	int temp = sizeof(arr);
+	return sizeof(arr)/sizeof(int);
+}
+
+void push_back(int *&arr, int num)
+{
+	int len = length(arr);
+	int *newArr = new int[len+1];
+	for (int i = 0; i < len; i++)
+	{
+		*(newArr + i) = *(arr + i);
+	}
+	*(newArr + len + 1) = num;
+	delete [] arr;
+	arr = newArr;
+}
+
+int Eller_Func(const int num)
+{
+	int Count = 1;
+	for (int i = num; i > 1; i--)
+	{
+		if (Check_Mutually_Simple(num, i))
+		{
+			Count++;
+		}
+	}
+	return Count;
+}
+
+std::vector<int> Protoplastic_Root(const int p)      //все первообразные корни
+{
+	std::vector<int> RootArr;
+	int j = 0; // index of RootArr;
+	std::vector<int> DividersArr;
+	DividersArr = Get_Prime_Dividers(p-1);
+	int size = DividersArr.size();
+	bool flag;
+	for (int g = 2; g <= p-1; g++)
+	{
+		flag = true;
+		for (int l = 1; (l <= size) && (flag); l++)
+		{
+			if (Fast_Exp(g, (p-1)/DividersArr[l-1], p) == 1)
+				flag = false;
+		}
+		if (flag)
+			RootArr.push_back(g);
+	}
+	return RootArr;
+}
+
+bool Check_Mutually_Simple(int num1, int num2)
+{
+	while (num1 != 0 && num2 != 0)
+	{
+		if (num1 > num2)
+		{
+			num1 %= num2;
+		}
+		else
+		{
+			num2 %= num1;
+		}
+
+	}
+	if (num1 + num2 == 1)
+	{
+		return true;
+	}
+	return false;
+}
+
+int Power(const int num, const int pow)
+{
+	int res = 1;
+	for (int i = 0; i < pow; i++)
+	{
+		res *= num;
+	}
+	return res;
+}
+
+bool IsPrime(const int num)
+{
+	for (int i = 2; i <= num / 2; i++)
+		if (num % i == 0)
+			return false;
+	return true;
+}
+
+int Fast_Exp(int a, int z, int n)
+{
+	int x = 1;
+	while (z)
+	{
+		while ((z % 2) == 0)
+		{
+			z /= 2;
+			a = (a * a) % n;
+		}
+		z--;
+		x = (x * a) % n;
+	}
+	return x;
+}
+
+std::vector<int> Euclide_Extended(int a, int b)
+{
+	int x0 = 1, x1 = 0;
+	int y0 = 0, y1 = 1;
+	int q, d2, x2, y2;
+	while (b > 1)
+	{
+		q = a / b;
+		d2 = a % b;
+		x2 = x0 - q * y1;
+		y2 = y0 - q * y1;
+		a = b;
+		b = d2;
+		x0 = x1;
+		x1 = x2;
+		y0 = y1;
+		y1 = y2;
+	}
+	std::vector<int> res;
+	res.push_back(x1);
+	res.push_back(y1);
+	res.push_back(b);
+    return res;
+}
+
+std::vector<int> Get_Prime_Dividers(const int num)
+{
+	std::vector<int> res;
+	for (int i = 2; i <= num / 2; i++)
+	{
+		if ((num % i == 0) && (IsPrime(i)))
+		{
+			res.push_back(i);
+		}
+	}
+	return res;
+}
+
+//	Crypt and so on... ////////////////////////////////////////////////////////
+
+int Hackerman_Proc(ifstream InFile, ofstream OutFile,const int g,const int p,const int k)
+{
+	if (InFile.is_open())
+	{
+		char *buffer = new char[READ_BYTES];
+		while (!InFile.eof())
+		{
+            // To create a read thread
+			for (int i = 0; i < READ_BYTES; i++)
+				InFile.get(buffer[i]);
+
+		}
+
+
+
+		delete [] buffer;
+		return 1;
+	}
+	return 0;
+}
+
+//////////////////////////////////////////////////////////////////////////////
+

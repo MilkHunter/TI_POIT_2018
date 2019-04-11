@@ -1,0 +1,78 @@
+//---------------------------------------------------------------------------
+
+#include <vcl.h>
+#pragma hdrstop
+
+#include "Unit1.h"
+#include "iostream"
+#include "fstream"
+#include "string"
+#include "cstring"
+//---------------------------------------------------------------------------
+#pragma package(smart_init)
+#pragma resource "*.dfm"
+ifstream txtfile;
+
+class LFSR
+{
+public:
+	int size;
+	int value;
+	public:
+		LFSR(int __size, int __value)
+		{
+			size = __size;
+			value = __value;
+		}
+		~LFSR();
+};
+
+char  *deletekeys(char *txt, char *alph)
+{
+	char *result = txt, *tmp = result;
+	int ch;
+	while (*txt)
+	{
+		ch = (int)(*txt);
+		if (strchr(alph,ch))
+		{
+			*tmp = (char)(ch);
+			tmp++;
+		}
+		txt++;
+	}
+	*tmp = '\0';
+	return result;
+}
+
+void push_reg(LFSR *reg,int value,int size)
+{
+	reg->size = size;
+	reg->value = value;
+	ShowMessage("Размер регистра = "+reg->size);
+}
+TForm1 *Form1;
+//---------------------------------------------------------------------------
+__fastcall TForm1::TForm1(TComponent* Owner)
+	: TForm(Owner)
+{
+}
+//---------------------------------------------------------------------------
+void __fastcall TForm1::BitBtn1Click(TObject *Sender)
+{
+	if (OpenDialog1->Execute())
+	{
+		wchar_t *fname = OpenDialog1->FileName.t_str();
+		txtfile.open(fname);
+
+		txtfile.close();
+	}
+}
+//---------------------------------------------------------------------------
+void __fastcall TForm1::Button1Click(TObject *Sender)
+{
+	LFSR *lfsr1 = new LFSR(StrToInt(Edit1->Text)), StrToInt((Edit2->Text)));
+	push_reg(lfsr1, 14,14);
+}
+//---------------------------------------------------------------------------
+

@@ -1,0 +1,64 @@
+//---------------------------------------------------------------------------
+
+#include <vcl.h>
+#pragma hdrstop
+
+#include "Unit1.h"
+#include "iostream"
+#include "fstream"
+#include "string"
+#include "cstring"
+//---------------------------------------------------------------------------
+#pragma package(smart_init)
+#pragma resource "*.dfm"
+ifstream txtfile;
+
+class LFSR
+{
+	int size;
+	int arr[];
+	public:
+		LFSR(int __size)
+		{
+			size = __size;
+		}
+		~LFSR();
+};
+
+char  *deletekeys(char *txt, char *alph)
+{
+	char *result = txt, *tmp = txt;
+	int ch;
+	while (txt)
+	{
+		ch = (int)(*txt);
+		if (strchr(alph,ch))
+		{
+			*tmp = *txt;
+			tmp++;
+		}
+		txt++;
+	}
+	result = tmp;
+	return result;
+}
+String mainstr = "";
+TForm1 *Form1;
+//---------------------------------------------------------------------------
+__fastcall TForm1::TForm1(TComponent* Owner)
+	: TForm(Owner)
+{
+}
+//---------------------------------------------------------------------------
+void __fastcall TForm1::BitBtn1Click(TObject *Sender)
+{
+	if (OpenDialog1->Execute())
+	{
+		wchar_t *fname = OpenDialog1->FileName.t_str();
+		txtfile.open(fname);
+		char buff[2048];
+		txtfile.getline(buff, 2048);
+		txtfile.close();
+	}
+}
+//---------------------------------------------------------------------------

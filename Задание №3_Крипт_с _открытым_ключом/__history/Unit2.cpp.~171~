@@ -1,0 +1,245 @@
+//---------------------------------------------------------------------------
+
+#include <vcl.h>
+#pragma hdrstop
+
+#include "Unit2.h"
+#include "Unit3.h"
+#include "MainProc.h"
+#include "GIFImg.hpp"
+
+//---------------------------------------------------------------------------
+#pragma package(smart_init)
+#pragma resource "*.dfm"
+TfrmMain *frmMain;
+ifstream InFile;
+bool Ready = false;
+TBitmap *BMP = new TBitmap;
+int p = 0;
+int k = 0;
+int x = 1;
+int g = 0;
+int LastP = p;
+
+bool CheckLetters(AnsiString str);
+int *Check_Info(const int p, const int k, const int x, const int g);
+
+//---------------------------------------------------------------------------
+
+__fastcall TfrmMain::TfrmMain(TComponent* Owner)
+	: TForm(Owner)
+{
+}
+
+//---------------------------------------------------------------------------
+
+
+
+void __fastcall TfrmMain::actCheckInfoExecute(TObject *Sender)
+{
+	int i = 0;
+	String str = edtP->Text;
+	if ((edtP->Text != "") && (CheckLetters(str)))
+	{
+		p = StrToInt(edtP->Text);
+		if (LastP != p)
+		{
+			LastP = p;
+			cmbG->Clear();
+		}
+	}
+	else
+	{
+		btnCrypt->Enabled = false;
+		Ready = false;
+		p = 0;
+		cmbG->Clear();
+	}
+	str = edtK->Text;
+	if ((edtK->Text != "") && (CheckLetters(str)))
+		k = StrToInt(edtK->Text);
+	else
+	{
+		btnCrypt->Enabled = false;
+		Ready = false;
+		k = 0;   //
+	}
+	str = edtK->Text;
+	if (edtX->Text != "" && (CheckLetters(str)))
+		x = StrToInt(edtX->Text);
+	else
+	{
+		btnCrypt->Enabled = false;
+		Ready = false;
+		x = 1; //
+	}
+	str = cmbG->Text;
+	if (cmbG->Text != "" && (CheckLetters(str)))
+		g = StrToInt(cmbG->Text);
+	else
+	{
+		btnCrypt->Enabled = false;
+		Ready = false;
+		g = 0; //
+	}
+	int *arr = Check_Info(p, k, x, g);
+	int *parr = arr;
+	bool pf = parr[0];
+	bool kf = parr[1];
+	bool xf = parr[2];
+	bool gf = parr[3];
+	if (pf)
+	{
+		imgError->Canvas->MoveTo(edtP->Left+10, edtP->Top + 10);
+		imgError->Canvas->Ellipse(edtP->Left + edtP->Width + 10, edtP->Top + 10,edtP->Left + edtP->Width + 15, edtP->Top  + 10);
+//		ReleaseDC(Handle, Canvas->Handle);
+	}
+	else
+	{
+		std::vector<int> GArr = Protoplastic_Root(p);
+		for (int j = 0; j < GArr.size(); j++)
+		{
+			cmbG->Items->Add((IntToStr(GArr[j])));
+		}
+		i++;
+	}
+	if (kf)
+	{
+		imgError->Canvas->MoveTo(edtK->Left+10, edtK->Top);
+		imgError->Canvas->Ellipse(edtK->Left + edtK->Width + 10, edtK->Top + 10,edtK->Left + edtK->Width + 15, edtK->Top + 10);
+		//ReleaseDC(Handle, Canvas->Handle);
+	}
+	else
+		i++;
+	if (xf)
+	{
+//        imgError->Canvas->Pen-
+		imgError->Canvas->MoveTo(edtX->Left+10, edtX->Top);
+		imgError->Canvas->Ellipse(edtX->Left + edtX->Width + 10, edtX->Top + 10,edtX->Left + edtX->Width + 15, edtX->Top + 10);
+//		ReleaseDC(Handle, Canvas->Handle);
+	}
+	else
+		i++;
+	if (gf)
+	{
+		imgError->Canvas->MoveTo(cmbG->Left, cmbG->Top);
+		imgError->Canvas->Ellipse(cmbG->Left + cmbG->Width + 10, cmbG->Top + 10, cmbG->Left + cmbG->Width + 15, cmbG->Top + 10);
+//		ReleaseDC(Handle, Canvas->Handle);
+	}
+	else
+		i++;
+	if (4 == i)
+	{
+		Ready = true;
+		btnCrypt->Enabled = true;
+	}
+	else
+	{
+		Ready = 0;
+		btnCrypt->Enabled = false;
+	}
+}
+
+
+//---------------------------------------------------------------------------
+
+void __fastcall TfrmMain::edtPChange(TObject *Sender)
+{
+	actCheckInfo->Execute();
+}
+//---------------------------------------------------------------------------
+
+void __fastcall TfrmMain::FormCreate(TObject *Sender)
+{
+//	BMP->Assign(imgError->Picture->Graphic);
+	imgError->Canvas->Pen->Color = clRed;
+	imgError->Canvas->Brush->Color = clRed;
+//    imgError->Canvas->MoveTo(
+}
+
+//----------------------------------------------------------------------------//
+//	Проверка р на простоту, проверка на на простоту и на вхождение в промежуток
+//	Проверка х
+
+int *Check_Info(const int p, const int k, const int x, const int g)
+{
+	int res[4] = {1,1,1,1};
+
+	if (IsPrime(p))
+		res[0] = 0;
+
+	std::vector<int> Euclide = Euclide_Extended(k, p-1);
+	if ( (k >= 1) && (k <= (p-1)) && (1 == Euclide[2]) )
+		res[1] = 0;
+
+	if ( (x > 1) && (x < (p-1)) )
+		res[2] = 0;
+
+	if (g != 0)
+        res[3] = 0;
+	return res;
+}
+
+//----------------------------------------------------------------------------//
+
+bool CheckLetters(AnsiString str)
+{
+	int i = 1;
+	while (i <= str.Length())
+	{
+		if (!(str[i] <= 58 && str[i] >= 48))
+			return false;
+		i++;
+	}
+    return true;
+}
+
+
+//----------------------------------------------------------------------------//
+
+
+
+void __fastcall TfrmMain::Timer1Timer(TObject *Sender)
+{
+//    imgError->Invalidate();
+}
+//---------------------------------------------------------------------------
+
+void __fastcall TfrmMain::btnCryptClick(TObject *Sender)
+{
+	OpenDialog->Execute();
+	FILE *f, *_f;
+	if (OpenDialog->FileName != "")
+	{
+		f = _wfopen(OpenDialog->FileName.c_str(),L"wt+,ccs=UNICODE");
+		InFile.open(OpenDialog->FileName.c_str());
+		char *fname = "D:\\Users10\\Mi Pro\\Downloads\\Make #3lab\\result.txt";
+		_f = fopen(fname, "wb");
+//		std::ofstream OutFile(fname);
+//		OutFile.open(fname);
+		if (f != NULL)
+		{
+			char num;
+			int a, b;
+			int y  = Fast_Exp(g, x, p);
+			while (!InFile.eof())
+			{
+				num = fgetc(f);
+				int temp = num;
+				a = Fast_Exp(g, k, p);
+				b = (Fast_Exp(y, k, p) * Fast_Exp(num ,1, p)) % p;
+				char tempa = a;
+				char tempb = b;
+				putc(a, _f);
+                putc(b, _f);
+//				OutFile << tempa << tempb;
+			}
+			InFile.close();
+            OutFile.close();
+		}
+		else
+            ShowMessage("Error");
+	}
+}
+//---------------------------------------------------------------------------
+

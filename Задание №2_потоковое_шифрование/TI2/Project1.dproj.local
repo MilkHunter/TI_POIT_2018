@@ -1,0 +1,12 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<BorlandProject>
+	<Transactions>
+    <Transaction>1899.12.30 00:00:00.000.290,D:\Users10\Mi Pro\Documents\Embarcadero\Studio\Projects\Unit1.pas=D:\TI_2018\Задание №2_потоковое_шифрование\TI2\Unit1.pas</Transaction>
+    <Transaction>1899.12.30 00:00:00.000.198,=D:\Users10\Mi Pro\Documents\Embarcadero\Studio\Projects\Unit2.pas</Transaction>
+    <Transaction>1899.12.30 00:00:00.000.725,D:\Users10\Mi Pro\Documents\Embarcadero\Studio\Projects\Unit2.pas=D:\TI_2018\Задание №2_потоковое_шифрование\TI2\Operations.pas</Transaction>
+    <Transaction>1899.12.30 00:00:00.000.216,=D:\Users10\Mi Pro\Documents\Embarcadero\Studio\Projects\Unit1.pas</Transaction>
+    <Transaction>1899.12.30 00:00:00.000.290,D:\Users10\Mi Pro\Documents\Embarcadero\Studio\Projects\Unit1.dfm=D:\TI_2018\Задание №2_потоковое_шифрование\TI2\Unit1.dfm</Transaction>
+    <Transaction>1899.12.30 00:00:00.000.414,D:\Users10\Mi Pro\Documents\Embarcadero\Studio\Projects\Project1.dproj=D:\TI_2018\Задание №2_потоковое_шифрование\TI2\Project1.dproj</Transaction>
+    <Transaction>1899.12.30 00:00:00.000.623,=D:\Users10\Mi Pro\Documents\Embarcadero\Studio\Projects\Unit1.pas</Transaction>
+  </Transactions>
+</BorlandProject>

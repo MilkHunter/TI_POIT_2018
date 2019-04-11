@@ -1,0 +1,12 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<BorlandProject>
+	<Transactions>
+    <Transaction>1899.12.30 00:00:00.000.440,=D:\TI_2018\Задание №3_Крипт_с _открытым_ключом\delphi version\Unit1.pas</Transaction>
+    <Transaction>1899.12.30 00:00:00.000.092,D:\Users10\Mi Pro\Documents\Embarcadero\Studio\Projects\Project2.dproj=D:\TI_2018\Задание №3_Крипт_с _открытым_ключом\delphi version\TI3.dproj</Transaction>
+    <Transaction>1899.12.30 00:00:00.000.406,D:\Users10\Mi Pro\Documents\Embarcadero\Studio\Projects\Unit3.dfm=D:\TI_2018\Задание №3_Крипт_с _открытым_ключом\delphi version\MainForm.dfm</Transaction>
+    <Transaction>1899.12.30 00:00:00.000.443,D:\TI_2018\Задание №3_Крипт_с _открытым_ключом\delphi version\Unit1.pas=D:\TI_2018\Задание №3_Крипт_с _открытым_ключом\delphi version\Anim.pas</Transaction>
+    <Transaction>1899.12.30 00:00:00.000.443,D:\TI_2018\Задание №3_Крипт_с _открытым_ключом\delphi version\Unit1.dfm=D:\TI_2018\Задание №3_Крипт_с _открытым_ключом\delphi version\Anim.dfm</Transaction>
+    <Transaction>1899.12.30 00:00:00.000.406,D:\Users10\Mi Pro\Documents\Embarcadero\Studio\Projects\Unit3.pas=D:\TI_2018\Задание №3_Крипт_с _открытым_ключом\delphi version\MainForm.pas</Transaction>
+    <Transaction>1899.12.30 00:00:00.000.303,=D:\Users10\Mi Pro\Documents\Embarcadero\Studio\Projects\Unit3.pas</Transaction>
+  </Transactions>
+</BorlandProject>

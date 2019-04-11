@@ -1,0 +1,23 @@
+//---------------------------------------------------------------------------
+
+#ifndef MainProcH
+#define MainProcH
+
+#include <vector>
+#include <fstream>
+
+int Eller_Func(const int);
+bool Check_Mutually_Simple(int, int);
+
+int Fast_Exp(int, int, int);
+std::vector<int> Protoplastic_Root(const int);
+int Power(const int, const int);
+bool IsPrime(const int);
+std::vector<int> Euclide_Extended(int, int);
+std::vector<int> Get_Prime_Dividers(const int);
+int length(int *);
+void Hackerman_Proc(ifstream, ofstream);
+
+
+//---------------------------------------------------------------------------
+#endif
